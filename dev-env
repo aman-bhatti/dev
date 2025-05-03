@@ -138,6 +138,8 @@ update_files "$DEV_ENV/env/.local" "$HOME/.local"
 
 copy_file "$DEV_ENV/env/.zshrc" "$HOME/.zshrc"
 copy_file "$DEV_ENV/env/.zsh_profile" "$HOME/.zsh_profile"
+copy_file "$DEV_ENV/dev-env" "$HOME/.local/scripts/dev-env"
+
 
 log "Deployment script finished."
 

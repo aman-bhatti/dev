@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+git clone git@github.com:aman-bhatti/text-editor.git $HOME/personal/
+git clone git@github.com:aman-bhatti/doodle.bob.git $HOME/personal/
+git clone git@github.com:aman-bhatti/amanbhatti.git $HOME/personal/
+git clone git@github.com:aman-bhatti/weight-tracker.git $HOME/personal/
+git clone git@github.com:aman-bhatti/subway-maker.git $HOME/personal/
+git clone git@github.com:aman-bhatti/note-taking.git $HOME/personal/
+git clone git@github.com:aman-bhatti/sudoku_tui.git $HOME/personal/
+git clone git@github.com:aman-bhatti/book-recognition.git $HOME/personal/
