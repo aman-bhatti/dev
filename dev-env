@@ -1,0 +1,143 @@
+#!/usr/bin/env bash
+
+dry_run="0"
+filter_pattern="" 
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --dry)
+            dry_run="1"
+            echo "[DRY RUN] Enabled. No changes will be made."
+            shift 
+            ;;
+        *)
+            if [ -n "$filter_pattern" ]; then
+                echo "ERROR: Only one filter pattern allowed."
+                exit 1
+            fi
+            filter_pattern="$1"
+            shift 
+            ;;
+    esac
+done
+
+if [ -z "$XDG_CONFIG_HOME" ]; then
+    echo "XDG_CONFIG_HOME not set, using default: ~/.config"
+    XDG_CONFIG_HOME="$HOME/.config"
+fi
+
+if [ -z "$DEV_ENV" ]; then
+    echo "ERROR: Environment variable DEV_ENV needs to be set to the path of this repository."
+    exit 1
+fi
+
+log() {
+    if [[ $dry_run == "1" ]]; then
+        echo "[DRY_RUN]: $1"
+    else
+        echo "$1"
+    fi
+}
+
+log "Using DEV_ENV: $DEV_ENV"
+log "Using XDG_CONFIG_HOME: $XDG_CONFIG_HOME"
+
+if [ -n "$filter_pattern" ]; then
+    log "Using filter pattern: '$filter_pattern'"
+fi
+
+update_files() {
+    local source_base="$1"
+    local target_base="$2"
+
+    log "Syncing directories from: $source_base to $target_base"
+    if [ ! -d "$source_base" ]; then
+        log "WARNING: Source directory does not exist: $source_base"
+        return
+    fi
+
+
+    pushd "$source_base" &> /dev/null || return 1
+
+    local configs
+
+    configs=$(find . -mindepth 1 -maxdepth 1 -type d -printf '%f\n')
+
+    for c in $configs; do
+        if [ -n "$filter_pattern" ]; then
+            if echo "$c" | grep -vq "$filter_pattern"; then
+                log "Filter '$filter_pattern' skipped directory: $c"
+                continue 
+            fi
+            log "Filter '$filter_pattern' matched directory: $c"
+        fi
+
+        local source_item="./$c"
+        local target_item="$target_base/$c"
+
+        log "  Ensuring target base directory exists: $target_base"
+        if [[ $dry_run == "0" ]]; then
+            mkdir -p "$target_base"
+        fi
+
+        log "  Removing existing target: rm -rf $target_item"
+        if [[ $dry_run == "0" ]]; then
+            rm -rf "$target_item"
+        fi
+
+        log "  Copying source to target: cp -r $source_item $target_base/"
+        if [[ $dry_run == "0" ]]; then
+            cp -r "$source_item" "$target_base/"
+        fi
+    done
+
+    popd &> /dev/null
+}
+
+copy_file() {
+    local source_file="$1"
+    local target_file="$2"
+    local target_dir
+    local source_basename 
+
+    source_basename=$(basename "$source_file") 
+
+    if [ -n "$filter_pattern" ]; then
+        if echo "$source_basename" | grep -vq "$filter_pattern"; then
+            log "Filter '$filter_pattern' skipped file: $source_basename"
+            return 
+        fi
+        log "Filter '$filter_pattern' matched file: $source_basename"
+    fi
+
+    target_dir=$(dirname "$target_file")
+
+    if [ ! -f "$source_file" ]; then
+        log "WARNING: Source file does not exist: $source_file"
+        return
+    fi
+
+    log "Ensuring target directory exists: $target_dir"
+    if [[ $dry_run == "0" ]]; then
+        mkdir -p "$target_dir"
+    fi
+
+    log "Removing existing target file: rm -f $target_file"
+    if [[ $dry_run == "0" ]]; then
+        rm -f "$target_file"
+    fi
+
+    log "Copying source file: cp $source_file $target_file"
+    if [[ $dry_run == "0" ]]; then
+        cp "$source_file" "$target_file"
+    fi
+}
+
+update_files "$DEV_ENV/env/.config" "$XDG_CONFIG_HOME"
+update_files "$DEV_ENV/env/.local" "$HOME/.local"
+
+copy_file "$DEV_ENV/env/.zshrc" "$HOME/.zshrc"
+copy_file "$DEV_ENV/env/.zsh_profile" "$HOME/.zsh_profile"
+
+log "Deployment script finished."
+

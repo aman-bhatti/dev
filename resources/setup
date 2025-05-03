@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+sudo pacman -Syu 
+
+if ! command -v git &> /dev/null; then
+    sudo apt -y install git
+fi
+
+if [ ! -d $HOME/personal ]; then
+    mkdir $HOME/personal
+fi
+
+git clone git@github.com:aman-bhatti/dev.git $HOME/personal/dev
+
+pushd $HOME/personal/dev
+./run
+popd
