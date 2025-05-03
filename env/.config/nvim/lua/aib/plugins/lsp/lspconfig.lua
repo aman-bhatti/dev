@@ -6,6 +6,7 @@ return {
 				"folke/lazydev.nvim",
 				ft = "lua",
 				opts = {
+					-- NOTE: Removed incorrect 'setup' block from here
 					library = {
 						{ path = "luvit-meta/library", words = { "vim%.uv" } },
 						{ path = "/usr/share/awesome/lib/", words = { "awesome" } },
@@ -71,6 +72,9 @@ return {
 						semanticTokensProvider = vim.NIL,
 					},
 				},
+				-- rust_analyzer is still listed here so mason-tool-installer
+				-- can ensure it's installed if needed, but mason-lspconfig
+				-- will be prevented from setting it up below.
 				rust_analyzer = true,
 				svelte = true,
 				templ = true,
@@ -147,6 +151,24 @@ return {
 			vim.list_extend(ensure_installed, servers_to_install)
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
+			-- *** ADDED THIS BLOCK ***
+			-- Prevent mason-lspconfig from setting up rust_analyzer
+			-- because rustaceanvim handles it.
+			require("mason-lspconfig").setup_handlers({
+				["rust_analyzer"] = function()
+					-- Do nothing. Let rustaceanvim handle setup.
+				end,
+				-- Default handler for other servers:
+				-- function(server_name)
+				--   require("lspconfig")[server_name].setup({
+				--     capabilities = capabilities,
+				--     -- Add other default configurations here if needed
+				--   })
+				-- end,
+			})
+			-- *** END OF ADDED BLOCK ***
+
+			-- This loop will now skip rust_analyzer because of the handler above
 			for name, config in pairs(servers) do
 				if config == true then
 					config = {}
@@ -155,7 +177,11 @@ return {
 					capabilities = capabilities,
 				}, config)
 
-				lspconfig[name].setup(config)
+				-- Check if rust_analyzer to avoid setting it up here
+				-- (setup_handlers should prevent this, but double-checking doesn't hurt)
+				if name ~= "rust_analyzer" then
+					lspconfig[name].setup(config)
+				end
 			end
 
 			local disable_semantic_tokens = {
@@ -167,6 +193,15 @@ return {
 					local bufnr = args.buf
 					local client = assert(vim.lsp.get_client_by_id(args.data.client_id), "must have valid client")
 
+					-- *** IMPORTANT: Check if the client is rust_analyzer managed by rustaceanvim ***
+					-- rustaceanvim might handle keymaps and settings differently.
+					-- You might need to conditionally apply the keymaps below
+					-- or configure them within rustaceanvim's settings instead.
+					-- For now, we apply them to all attached LSPs *except* potentially rust_analyzer
+					-- if rustaceanvim sets its own. Check rustaceanvim docs for recommended setup.
+
+					-- Example: Only set these keymaps if NOT rust_analyzer (or configure via rustaceanvim)
+					-- if client.name ~= "rust_analyzer" then
 					local settings = servers[client.name]
 					if type(settings) ~= "table" then
 						settings = {}
@@ -175,23 +210,24 @@ return {
 					local builtin = require("telescope.builtin")
 
 					vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
-					vim.keymap.set("n", "gd", builtin.lsp_definitions, { buffer = 0 })
-					vim.keymap.set("n", "gr", builtin.lsp_references, { buffer = 0 })
-					vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = 0 })
-					vim.keymap.set("n", "gT", vim.lsp.buf.type_definition, { buffer = 0 })
-					vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = 0 })
+					vim.keymap.set("n", "gd", builtin.lsp_definitions, { buffer = bufnr })
+					vim.keymap.set("n", "gr", builtin.lsp_references, { buffer = bufnr })
+					vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = bufnr })
+					vim.keymap.set("n", "gT", vim.lsp.buf.type_definition, { buffer = bufnr })
+					vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = bufnr })
 
-					vim.keymap.set("n", "<space>cr", vim.lsp.buf.rename, { buffer = 0 })
-					vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, { buffer = 0 })
-					vim.keymap.set("n", "<space>wd", builtin.lsp_document_symbols, { buffer = 0 })
+					vim.keymap.set("n", "<space>cr", vim.lsp.buf.rename, { buffer = bufnr })
+					vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, { buffer = bufnr })
+					vim.keymap.set("n", "<space>wd", builtin.lsp_document_symbols, { buffer = bufnr })
+					-- end -- End of conditional keymap block example
 
 					local filetype = vim.bo[bufnr].filetype
 					if disable_semantic_tokens[filetype] then
 						client.server_capabilities.semanticTokensProvider = nil
 					end
 
-					-- Override server capabilities
-					if settings.server_capabilities then
+					-- Override server capabilities (ensure this doesn't conflict with rustaceanvim)
+					if settings and settings.server_capabilities then
 						for k, v in pairs(settings.server_capabilities) do
 							if v == vim.NIL then
 								v = nil

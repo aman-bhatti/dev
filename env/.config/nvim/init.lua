@@ -20,7 +20,6 @@ require("bufferline").setup({})
 --vim.cmd([[colorscheme rose-pine-moon]])
 --vim.cmd("colorscheme flexoki-dark")
 vim.cmd("colorscheme base16-black-metal")
-
 vim.cmd([[highlight Comment gui=bold]])
 vim.cmd([[highlight Keyword gui=bold]])
 vim.cmd([[highlight @tag.builtin gui=bold]])
