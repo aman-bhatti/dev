@@ -36,9 +36,6 @@ return {
 			},
 			defaults = {
 				path_display = { "smart" },
-				vimgrep_arguments = {
-					"--hidden",
-				},
 				mappings = {
 					i = {
 						["<C-k>"] = actions.move_selection_previous, -- move to prev result
