@@ -36,6 +36,9 @@ return {
 			},
 			defaults = {
 				path_display = { "smart" },
+				vimgrep_arguments = {
+					"--hidden",
+				},
 				mappings = {
 					i = {
 						["<C-k>"] = actions.move_selection_previous, -- move to prev result
@@ -58,5 +61,10 @@ return {
 		keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in cwd" })
 		keymap.set("n", "<leader>ft", "<cmd>TodoTelescope<cr>", { desc = "Find todos" })
 		keymap.set("n", "<leader>gt", "<cmd>Telescope git_files<cr>", { desc = "finding git files" })
+		keymap.set("n", "<Leader>fe", function()
+			require("telescope.builtin").find_files({
+				find_command = { "rg", "--files", "--iglob", "!.git", "--hidden" },
+			})
+		end, { desc = "Find Hidden Files (excluding .git)" })
 	end,
 }
