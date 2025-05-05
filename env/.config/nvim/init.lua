@@ -14,12 +14,14 @@ vim.diagnostic.config({
 	},
 })
 
-require("bufferline").setup({})
+--require("bufferline").setup({})
 
---vim.cmd.colorscheme 'tokyonight'
 --vim.cmd([[colorscheme rose-pine-moon]])
 --vim.cmd("colorscheme flexoki-dark")
-vim.cmd("colorscheme base16-black-metal")
+--vim.cmd("colorscheme base16-black-metal")
+
+--vim.cmd([[highlight BufferDefaultCurrent guifg=#98C379]])
+vim.cmd([[highlight BufferDefaultCurrentERROR guifg=#ff0000]])
 vim.cmd([[highlight Comment gui=bold]])
 vim.cmd([[highlight Keyword gui=bold]])
 vim.cmd([[highlight @tag.builtin gui=bold]])

@@ -35,3 +35,17 @@ vim.api.nvim_set_keymap("n", "<C-d>", "<C-d>", { noremap = true, silent = true }
 vim.api.nvim_set_keymap("n", "<C-u>", "<C-u>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<C-f>", "<C-f>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<C-b>", "<C-b>", { noremap = true, silent = true })
+
+local map = vim.keymap.set
+local opts = { noremap = true, silent = true }
+
+for i = 1, 9 do
+	map("n", string.format("<leader>%d", i), string.format("<Cmd>BufferGoto %d<CR>", i), {
+		desc = string.format("Go to buffer %d", i),
+		silent = true,
+	})
+end
+
+map("n", "<leader>c", "<Cmd>BufferClose<CR>", { desc = "Close buffer", silent = true })
+map("n", "<Tab>", "<Cmd>BufferNext<CR>", { desc = "Next Buffer", noremap = true, silent = true })
+map("n", "<S-Tab>", "<Cmd>BufferPrevious<CR>", { desc = "Previous buffer", noremap = true, silent = true })

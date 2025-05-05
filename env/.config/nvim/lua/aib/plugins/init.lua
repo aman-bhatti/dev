@@ -8,6 +8,8 @@ return {
 	"NvChad/nvim-colorizer.lua",
 	"projekt0n/github-nvim-theme",
 	"ThePrimeagen/harpoon",
+	"RRethy/base16-nvim",
+	"metalelf0/black-metal-theme-neovim",
 	"neanias/everforest-nvim",
 	"EdenEast/nightfox.nvim",
 	--{ "akinsho/bufferline.nvim", version = "*", dependencies = "nvim-tree/nvim-web-devicons" },
