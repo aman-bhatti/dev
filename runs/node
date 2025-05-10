@@ -1,3 +1,3 @@
-sudo pacman -S nodejs
+sudo pacman -S nodejs --needed --noconfirm
 
 curl -fsSL https://get.pnpm.io/install.sh | sh -

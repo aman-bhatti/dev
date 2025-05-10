@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-sudo pacman -S bat yazi eza
+sudo pacman -S bat yazi eza --needed --noconfirm
 
 curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
