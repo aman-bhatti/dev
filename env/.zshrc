@@ -1,5 +1,6 @@
 export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 
+bindkey -s ^f "tmux-sessionizer\n"
 
 alias vim='nvim'
 alias ls='eza'
