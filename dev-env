@@ -1,14 +1,24 @@
 #!/usr/bin/env bash
 
 dry_run="0"
-filter_pattern="" 
+filter_pattern=""
+section_to_run="all"
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --dry)
             dry_run="1"
             echo "[DRY RUN] Enabled. No changes will be made."
-            shift 
+            shift
+            ;;
+        --section) 
+            if [[ -n "$2" && "$2" != --* ]]; then
+                section_to_run="$2"
+                shift 2
+            else
+                echo "ERROR: --section requires an argument (e.g., config, local, files, all)."
+                exit 1
+            fi
             ;;
         *)
             if [ -n "$filter_pattern" ]; then
@@ -16,7 +26,7 @@ while [[ $# -gt 0 ]]; do
                 exit 1
             fi
             filter_pattern="$1"
-            shift 
+            shift
             ;;
     esac
 done
@@ -41,6 +51,7 @@ log() {
 
 log "Using DEV_ENV: $DEV_ENV"
 log "Using XDG_CONFIG_HOME: $XDG_CONFIG_HOME"
+log "Section to run: $section_to_run"
 
 if [ -n "$filter_pattern" ]; then
     log "Using filter pattern: '$filter_pattern'"
@@ -56,18 +67,16 @@ update_files() {
         return
     fi
 
-
     pushd "$source_base" &> /dev/null || return 1
 
     local configs
-
     configs=$(find . -mindepth 1 -maxdepth 1 -type d -printf '%f\n')
 
     for c in $configs; do
         if [ -n "$filter_pattern" ]; then
             if echo "$c" | grep -vq "$filter_pattern"; then
                 log "Filter '$filter_pattern' skipped directory: $c"
-                continue 
+                continue
             fi
             log "Filter '$filter_pattern' matched directory: $c"
         fi
@@ -98,14 +107,14 @@ copy_file() {
     local source_file="$1"
     local target_file="$2"
     local target_dir
-    local source_basename 
+    local source_basename
 
-    source_basename=$(basename "$source_file") 
+    source_basename=$(basename "$source_file")
 
     if [ -n "$filter_pattern" ]; then
         if echo "$source_basename" | grep -vq "$filter_pattern"; then
             log "Filter '$filter_pattern' skipped file: $source_basename"
-            return 
+            return
         fi
         log "Filter '$filter_pattern' matched file: $source_basename"
     fi
@@ -133,13 +142,22 @@ copy_file() {
     fi
 }
 
-update_files "$DEV_ENV/env/.config" "$XDG_CONFIG_HOME"
-update_files "$DEV_ENV/env/.local" "$HOME/.local"
+if [[ "$section_to_run" == "all" || "$section_to_run" == "config" ]]; then
+    log "--- Running .config section ---"
+    update_files "$DEV_ENV/env/.config" "$XDG_CONFIG_HOME"
+fi
 
-copy_file "$DEV_ENV/env/.zshrc" "$HOME/.zshrc"
-copy_file "$DEV_ENV/env/.zsh_profile" "$HOME/.zsh_profile"
-copy_file "$DEV_ENV/dev-env" "$HOME/.local/scripts/dev-env"
+if [[ "$section_to_run" == "all" || "$section_to_run" == "local" ]]; then
+    log "--- Running .local section ---"
+    update_files "$DEV_ENV/env/.local" "$HOME/.local"
+fi
 
+if [[ "$section_to_run" == "all" || "$section_to_run" == "files" ]]; then
+    log "--- Running individual files section ---"
+    copy_file "$DEV_ENV/env/.zshrc" "$HOME/.zshrc"
+    copy_file "$DEV_ENV/env/.zsh_profile" "$HOME/.zsh_profile"
+    copy_file "$DEV_ENV/dev-env" "$HOME/.local/scripts/dev-env"
+fi
 
 log "Deployment script finished."
 

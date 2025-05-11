@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+WALLPAPER_DIR="$HOME/Pictures/wallpapers/"
+
+# Pick a single random wallpaper
+WALLPAPER=$(find "$WALLPAPER_DIR" -type f | shuf -n 1)
+
+# Preload the wallpaper
+hyprctl hyprpaper preload "$WALLPAPER"
+
+# Loop through all monitors and set the wallpaper
+for MON in $(hyprctl monitors | grep "Monitor" | awk '{print $2}'); do
+    hyprctl hyprpaper wallpaper "$MON,$WALLPAPER"
+done
+
