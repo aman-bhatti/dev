@@ -143,3 +143,4 @@ copy_file "$DEV_ENV/dev-env" "$HOME/.local/scripts/dev-env"
 
 log "Deployment script finished."
 
+hyprctl reload
