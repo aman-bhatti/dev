@@ -25,7 +25,7 @@ source /usr/share/zsh/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
 
 # fzf with bat and eza
-precmd() {
-  printf "\033k%s\033\\" "${PWD##*/}"
-}
+# precmd() {
+#   printf "\033k%s\033\\" "${PWD##*/}"
+# }
 
