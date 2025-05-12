@@ -8,7 +8,8 @@
     // Choose the order of the modules
     "modules-left": [
         "hyprland/workspaces",
-        "hyprland/window"
+        "wlr/taskbar"
+        // "hyprland/window"
     ],
     "modules-center": [
         "clock"
@@ -17,11 +18,7 @@
         "pulseaudio",
         "temperature",
         "cpu",
-        "memory",
-        "backlight",
-        "keyboard-state",
-        "tray",
-        "custom/power"
+        "memory"
     ],
     "hyprland/workspaces": {
     "format": "{name}: {icon}",
@@ -60,6 +57,17 @@
             "unlocked": ""
         }
     },
+    "wlr/taskbar": {
+      "format": "{icon} ",
+      "markup": true,
+      "icon-size": 20,
+      "icon-theme": "Chicago95",
+      "tooltip-format": "{title}",
+      "active-first": true,
+      "on-click": "activate",
+      "on-click-right": "close"
+},
+
     "sway/mode": {
         "format": "<span style=\"italic\">{}</span>"
     },
@@ -78,8 +86,28 @@
         // "timezone": "America/New_York",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format-alt": "{:%m-%d-%Y}",
-        "format": "{:%H:%M:%S}",
-        "interval": 1
+        "format": "{:%r}",
+        "interval": 1,
+        "calendar": {
+                    "mode"          : "year",
+                    "mode-mon-col"  : 3,
+                    "weeks-pos"     : "right",
+                    "on-scroll"     : 1,
+                    "format": {
+                              "months":     "<span color='#ffead3'><b>{}</b></span>",
+                              "days":       "<span color='#ecc6d9'><b>{}</b></span>",
+                              "weeks":      "<span color='#99ffdd'><b>W{}</b></span>",
+                              "weekdays":   "<span color='#ffcc66'><b>{}</b></span>",
+                              "today":      "<span color='#ff6699'><b><u>{}</u></b></span>"
+                              }
+                    },
+        "actions":  {
+                    "on-click-right": "mode",
+                    "on-scroll-up": "tz_up",
+                    "on-scroll-down": "tz_down",
+                    "on-scroll-up": "shift_up",
+                    "on-scroll-down": "shift_down"
+                    }
     },
     "cpu": {
         "format": "{usage}% ",
@@ -149,7 +177,7 @@
         "format-bluetooth": "{volume}% {icon} {format_source}",
         "format-bluetooth-muted": " {icon} {format_source}",
         "format-muted": " {format_source}",
-        "format-source": "{volume}% ",
+        "format-source": " {volume}% ",
         "format-source-muted": "",
         "format-icons": {
             "headphone": "",

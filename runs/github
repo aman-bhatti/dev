@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-git clone git@github.com:aman-bhatti/text-editor.git $HOME/personal/
-git clone git@github.com:aman-bhatti/doodle.bob.git $HOME/personal/
-git clone git@github.com:aman-bhatti/amanbhatti.git $HOME/personal/
-git clone git@github.com:aman-bhatti/weight-tracker.git $HOME/personal/
-git clone git@github.com:aman-bhatti/subway-maker.git $HOME/personal/
-git clone git@github.com:aman-bhatti/note-taking.git $HOME/personal/
-git clone git@github.com:aman-bhatti/sudoku_tui.git $HOME/personal/
-git clone git@github.com:aman-bhatti/book-recognition.git $HOME/personal/
+git clone git@github.com:aman-bhatti/text-editor.git $HOME/personal/text-editor
+git clone git@github.com:aman-bhatti/doodle.bob.git $HOME/personal/doodle-bob
+git clone git@github.com:aman-bhatti/amanbhatti.git $HOME/personal/amanbhatti
+git clone git@github.com:aman-bhatti/weight-tracker.git $HOME/personal/weight-tracker
+git clone git@github.com:aman-bhatti/subway-maker.git $HOME/personal/subway-maker
+git clone git@github.com:aman-bhatti/note-taking.git $HOME/personal/note-taking
+git clone git@github.com:aman-bhatti/sudoku_tui.git $HOME/personal/sudoku_tui
+git clone git@github.com:aman-bhatti/book-recognition.git $HOME/personal/book-recognition

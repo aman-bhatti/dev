@@ -154,18 +154,13 @@ return {
 			-- *** ADDED THIS BLOCK ***
 			-- Prevent mason-lspconfig from setting up rust_analyzer
 			-- because rustaceanvim handles it.
-			require("mason-lspconfig").setup_handlers({
-				["rust_analyzer"] = function()
-					-- Do nothing. Let rustaceanvim handle setup.
-				end,
-				-- Default handler for other servers:
-				-- function(server_name)
-				--   require("lspconfig")[server_name].setup({
-				--     capabilities = capabilities,
-				--     -- Add other default configurations here if needed
-				--   })
-				-- end,
+			require("mason-lspconfig").setup({
+				ensure_installed = servers_to_install,
+				automatic_enable = {
+					exclude = { "rust_analyzer" },
+				},
 			})
+
 			-- *** END OF ADDED BLOCK ***
 
 			-- This loop will now skip rust_analyzer because of the handler above
