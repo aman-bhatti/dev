@@ -12,6 +12,7 @@ return {
 	"metalelf0/black-metal-theme-neovim",
 	"neanias/everforest-nvim",
 	"EdenEast/nightfox.nvim",
+	"mikavilpas/yazi.nvim",
 	--{ "akinsho/bufferline.nvim", version = "*", dependencies = "nvim-tree/nvim-web-devicons" },
 	{ "rose-pine/neovim", name = "rose-pine" },
 	-- In another file, e.g., lua/plugins/icons.lua
