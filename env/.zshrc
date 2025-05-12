@@ -1,10 +1,12 @@
 export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 export PATH="$HOME/.local/scripts:$PATH"
 
+export HYPRSHOT_DIR="/$HOME/Pictures/screenshots/"
+
 bindkey -s ^f "tmux-sessionizer\n"
 
 alias vim='nvim'
-alias ls='eza'
+alias ls='eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions'
 
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
@@ -22,4 +24,5 @@ esac
 source /usr/share/zsh/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
 
-# zsh-autocomplete
+# fzf with bat and eza
+
