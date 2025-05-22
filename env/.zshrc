@@ -29,3 +29,4 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.pl
 #   printf "\033k%s\033\\" "${PWD##*/}"
 # }
 
+fastfetch
