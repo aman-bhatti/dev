@@ -6,7 +6,7 @@ export HYPRSHOT_DIR="/$HOME/Pictures/screenshots/"
 bindkey -s ^f "tmux-sessionizer\n"
 
 alias vim='nvim'
-alias ls='eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions'
+alias ls='eza --color=always --git --no-filesize --icons=always --no-time --no-user --no-permissions'
 
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
