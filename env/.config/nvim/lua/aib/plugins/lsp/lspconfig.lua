@@ -76,6 +76,7 @@ return {
 				-- can ensure it's installed if needed, but mason-lspconfig
 				-- will be prevented from setting it up below.
 				rust_analyzer = true,
+				zls = true,
 				svelte = true,
 				templ = true,
 				taplo = true,
@@ -109,14 +110,12 @@ return {
 				gleam = {
 					manual_install = true,
 				},
-				lexical = {
-					cmd = { "/home/tjdevries/.local/share/nvim/mason/bin/lexical", "server" },
-					root_dir = get_root({ "mix.exs" }),
-					server_capabilities = {
-						completionProvider = vim.NIL,
-						definitionProvider = true,
-					},
-				},
+				--lexical = {
+				--	cmd = { "/absolute/path/to/_build/dev/package/lexical/bin/start_lexical.sh" },
+				--	root_dir = get_root({ "mix.exs", ".git" }),
+				--	filetypes = { "elixir", "eelixir", "heex" },
+				--	settings = {},
+				--},
 				clangd = {
 					init_options = { clangdFileStatus = true },
 					filetypes = { "c" },
@@ -162,6 +161,11 @@ return {
 			})
 
 			-- *** END OF ADDED BLOCK ***
+			require("elixir").setup({
+				nextls = { enable = false },
+				elixirls = { enable = true },
+				projectionist = { enable = true },
+			})
 
 			-- This loop will now skip rust_analyzer because of the handler above
 			for name, config in pairs(servers) do

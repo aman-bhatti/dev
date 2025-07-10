@@ -42,6 +42,8 @@ return {
 					"c",
 					"java",
 					"rust",
+					"elixir",
+					"eex",
 				},
 				incremental_selection = {
 					enable = true,
