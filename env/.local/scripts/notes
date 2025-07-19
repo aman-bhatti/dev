@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+NOTES_DIR="$HOME/personal/notebook"        # your notes folder
+EDITOR="${EDITOR:-nvim}"       # your preferred editor
+NEW_OPTION="➕ Create new note"
+
+mkdir -p "$NOTES_DIR"
+
+mapfile -t existing < <(find "$NOTES_DIR" -maxdepth 1 -type f -printf '%f\n' | sort)
+
+notes=( "$NEW_OPTION" "${existing[@]}" )
+
+choice=$(printf '%s\n' "${notes[@]}" \
+         | rofi -dmenu -i -p "Notes" 2>/dev/null)
+
+[ -z "$choice" ] && exit
+
+if [[ "$choice" == "$NEW_OPTION" ]]; then
+  name=$(rofi -dmenu -p "New note name (blank → YYYY‑MM‑DD)" 2>/dev/null)
+  if [ -z "$name" ]; then
+    filename="$(date '+%Y-%m-%d').md"
+  else
+    filename="${name// /_}.md"
+  fi
+  filepath="$NOTES_DIR/$filename"
+  touch "$filepath"
+  "$EDITOR" "$filepath"
+else
+  filepath="$NOTES_DIR/$choice"
+  if [ -f "$filepath" ]; then
+    "$EDITOR" "$filepath"
+  else
+    notify-send "Note not found:" "$filepath"
+  fi
+fi
+
