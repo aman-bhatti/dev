@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 
-NOTES_DIR="$HOME/personal/notebook"        # your notes folder
-EDITOR="${EDITOR:-nvim}"       # your preferred editor
+# ─────────────────────────────────────────────────────────────────────────────
+#  Configuration
+# ─────────────────────────────────────────────────────────────────────────────
+NOTES_DIR="$HOME/personal/notebook"        # where your notes live
+EDITOR="${EDITOR:-nvim}"                   # your $EDITOR fallback
+TERMINAL="${TERMINAL:-ghostty}"          # your preferred terminal emulator
 NEW_OPTION="➕ Create new note"
+# ─────────────────────────────────────────────────────────────────────────────
 
 mkdir -p "$NOTES_DIR"
 
@@ -12,7 +17,6 @@ notes=( "$NEW_OPTION" "${existing[@]}" )
 
 choice=$(printf '%s\n' "${notes[@]}" \
          | rofi -dmenu -i -p "Notes" 2>/dev/null)
-
 [ -z "$choice" ] && exit
 
 if [[ "$choice" == "$NEW_OPTION" ]]; then
@@ -24,13 +28,13 @@ if [[ "$choice" == "$NEW_OPTION" ]]; then
   fi
   filepath="$NOTES_DIR/$filename"
   touch "$filepath"
-  "$EDITOR" "$filepath"
 else
   filepath="$NOTES_DIR/$choice"
-  if [ -f "$filepath" ]; then
-    "$EDITOR" "$filepath"
-  else
+  if [ ! -f "$filepath" ]; then
     notify-send "Note not found:" "$filepath"
+    exit 1
   fi
 fi
+
+"$TERMINAL" -e "$EDITOR" "$filepath" &
 
