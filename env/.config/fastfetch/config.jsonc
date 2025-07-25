@@ -1,0 +1,59 @@
+{
+    "logo": {
+        // THIS IS FOR THE ASCII BATMAN LOGO
+        // "type": "file",
+        // "source": "/home/aman/Downloads/batman.txt",
+        // "color": {
+        //     "1": "yellow"
+        // }
+        // THIS IS FOR USING THE BATMAN LOGO IMAGE
+        "type": "kitty-icat",
+        "source": "/home/aman/Downloads/batman(1).png",
+        // "source": "/home/aman/Downloads/image.jpg",
+        "height": 15,
+        "width": 100,    
+        "padding": {
+            "top": 5
+        }
+    },
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+  "modules": [
+    "title",
+    "separator",
+    "os",
+    "host",
+    "kernel",
+    "uptime",
+    "packages",
+    "shell",
+    "display",
+    "de",
+    "wm",
+    "wmtheme",
+    "theme",
+    "icons",
+    "font",
+    "cursor",
+    "terminal",
+    "cpu",
+    "gpu",
+    "memory",
+    "disk",
+    "battery",
+    "poweradapter",
+    "break",
+    {
+    "type": "command",
+    "key": "Age",
+    "keyColor": "cyan",
+    "text": "birth_install=$(stat -c %W /); current=$(date +%s); days_difference=$(( (current - birth_install) / 86400 )); echo $days_difference days"
+},
+{
+    "type": "command",
+    "key": "Birthday",
+    "keyColor": "cyan",
+    "text": "birth_install=$(stat -c %W /); echo $(date -d @$birth_install '+%d %b %Y')"
+},
+    "colors"
+  ]
+}
