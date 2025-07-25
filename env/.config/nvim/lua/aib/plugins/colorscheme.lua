@@ -35,7 +35,7 @@ return {
 
 			-- HACK: set this on the color you want to be persistent
 			-- when quit and reopening nvim
-			vim.cmd("colorscheme base16-black-metal")
+			vim.cmd("colorscheme base16-black-metal-gorgoroth")
 		end,
 	},
 	-- Using lazy.nvim
