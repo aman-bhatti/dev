@@ -12,17 +12,20 @@ for wp in "${wallpapers[@]}"; do
     choices+="$filename\x00icon\x1f$wp\x1finfo\x1f$wp\n"
 done
 
-# Use rofi to select — return info (the full image path)
-selected_path=$(echo -e "$choices" | rofi -dmenu \
+# Use rofi to select (but return the full path via 'info' key)
+selected=$(echo -e "$choices" | rofi -dmenu \
     -markup-rows \
-    -format s \
+    -format i \
     -theme /home/aman/.config/rofi/themes/wallpaper.rasi \
     -p "🖼️ Choose Wallpaper")
 
 # If nothing selected, exit
-[[ -z "$selected_path" ]] && exit
+[[ -z "$selected" ]] && exit
 
-# Preload and set wallpaper on all monitors
+# Convert index to actual wallpaper path
+selected_path="${wallpapers[$selected]}"
+
+# Preload and set wallpaper
 hyprctl hyprpaper preload "$selected_path"
 for MON in $(hyprctl monitors | grep "Monitor" | awk '{print $2}'); do
     hyprctl hyprpaper wallpaper "$MON,$selected_path"
