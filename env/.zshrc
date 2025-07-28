@@ -1,6 +1,6 @@
 export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 export PATH="$HOME/.local/scripts:$PATH"
-
+export PATH="$HOME/.emacs.d/bin:$PATH"
 export HYPRSHOT_DIR="/$HOME/Pictures/screenshots/"
 
 bindkey -s ^f "tmux-sessionizer\n"
@@ -21,12 +21,13 @@ esac
 #
 
 # plugins
-source /usr/share/zsh/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+#source /usr/share/zsh/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
 
 # alias
 alias focus="pomodoro_zig -sm COMMENCE\ NOW -t 60 -m BREAK\ TIME"
 alias break="pomodoro_zig -sm BREAK\ NOW -t 10 -m FOCUS\ TIME"
+alias dune="emacs -nw"
 
 # fzf with bat and eza
 # precmd() {
@@ -34,3 +35,4 @@ alias break="pomodoro_zig -sm BREAK\ NOW -t 10 -m FOCUS\ TIME"
 # }
 
 fastfetch
+
