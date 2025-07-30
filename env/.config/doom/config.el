@@ -8,51 +8,47 @@
   :config
   (org-roam-db-autosync-mode)
 
-  ;; Clear any existing templates first
   (setq org-roam-capture-templates nil)
   
-  ;; Set capture templates
   (setq org-roam-capture-templates
         '(("d" "default" plain "%?"
-           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+           :target (file+head "${slug}.org"
                               "#+title: ${title}\n")
            :unnarrowed t)
 
           ("s" "data-structures" plain "%?"
-          :target (file+head "data-structures/%<%Y%m%d%H%M%S>-${slug}.org"
+          :target (file+head "data-structures/${slug}.org"
                             "#+title: ${title}\n#+category: data-structures\n#+tags: data-structures\n\n")
           :unnarrowed t)
 
           ("a" "algorithms" plain "%?"
-          :target (file+head "algorithms/%<%Y%m%d%H%M%S>-${slug}.org"
+          :target (file+head "algorithms/${slug}.org"
                             "#+title: ${title}\n#+category: algorithms\n#+tags: algorithms\n\n")
           :unnarrowed t)
 
           ("e" "LeetCode Easy" plain
            "* ${title} :leetcode:easy:\n\n*Problem Description*\n\n*Approach*\n\n*Code*\n#+begin_src python\n\n#+end_src\n\n*Notes*\n"
-           :target (file+head "leetcode/%<%Y%m%d%H%M%S>-${slug}.org"
+           :target (file+head "leetcode/${slug}.org"
                               "#+title: ${title}\n#+category: leetcode\n#+tags: leetcode easy\n")
            :unnarrowed t)
 
           ("m" "LeetCode Medium" plain
            "* ${title} :leetcode:medium:\n\n*Problem Description*\n\n*Approach*\n\n*Code*\n#+begin_src python\n\n#+end_src\n\n*Notes*\n"
-           :target (file+head "leetcode/%<%Y%m%d%H%M%S>-${slug}.org"
+           :target (file+head "leetcode/${slug}.org"
                               "#+title: ${title}\n#+category: leetcode\n#+tags: leetcode medium\n")
            :unnarrowed t)
 
           ("h" "LeetCode Hard" plain
            "* ${title} :leetcode:hard:\n\n*Problem Description*\n\n*Approach*\n\n*Code*\n#+begin_src python\n\n#+end_src\n\n*Notes*\n"
-           :target (file+head "leetcode/%<%Y%m%d%H%M%S>-${slug}.org"
+           :target (file+head "leetcode/${slug}.org"
                               "#+title: ${title}\n#+category: leetcode\n#+tags: leetcode hard\n")
            :unnarrowed t))))
 
 (after! org
-  ;; Make sure org-agenda includes all notes
   (setq org-agenda-files
         (delete-dups
          (directory-files-recursively "~/Documents/fortress/" "\\.org$")))
 
-  ;; Per-tag coloring for difficulty levels
   (setq org-tag-faces
         '(("easy"   . (:background "#C8E6C9" :foreground "#2E7D32" :weight bold))
           ("medium" . (:background "#FFF9C4" :foreground "#F57F17" :weight bold))
