@@ -26,23 +26,23 @@
                             "#+title: ${title}\n#+category: algorithms\n#+tags: algorithms\n\n")
           :unnarrowed t)
 
-          ("e" "LeetCode Easy" plain
-           "* ${title} :leetcode:easy:\n\n*Problem Description*\n\n*Approach*\n\n*Code*\n#+begin_src python\n\n#+end_src\n\n*Notes*\n"
-           :target (file+head "leetcode/${slug}.org"
-                              "#+title: ${title}\n#+category: leetcode\n#+tags: leetcode easy\n")
-           :unnarrowed t)
-
-          ("m" "LeetCode Medium" plain
-           "* ${title} :leetcode:medium:\n\n*Problem Description*\n\n*Approach*\n\n*Code*\n#+begin_src python\n\n#+end_src\n\n*Notes*\n"
-           :target (file+head "leetcode/${slug}.org"
-                              "#+title: ${title}\n#+category: leetcode\n#+tags: leetcode medium\n")
-           :unnarrowed t)
-
           ("h" "LeetCode Hard" plain
-           "* ${title} :leetcode:hard:\n\n*Problem Description*\n\n*Approach*\n\n*Code*\n#+begin_src python\n\n#+end_src\n\n*Notes*\n"
-           :target (file+head "leetcode/${slug}.org"
-                              "#+title: ${title}\n#+category: leetcode\n#+tags: leetcode hard\n")
-           :unnarrowed t))))
+          "*Link*\n[[]]\n\n*Problem Description*\n\n*Approach*\n\n*Code*\n#+begin_src python\n\n#+end_src\n\n*Notes*\n"
+          :target (file+head "leetcode/${slug}.org"
+                             "#+title: ${title}\n#+category: leetcode\n#+tags: leetcode hard\n")
+          :unnarrowed t)
+        
+          ("m" "LeetCode Medium" plain
+          "*Link*\n[[]]\n\n*Problem Description*\n\n*Approach*\n\n*Code*\n#+begin_src python\n\n#+end_src\n\n*Notes*\n"
+          :target (file+head "leetcode/${slug}.org"
+                             "#+title: ${title}\n#+category: leetcode\n#+tags: leetcode medium\n")
+          :unnarrowed t)
+        
+          ("e" "LeetCode Easy" plain
+          "*Link*\n[[]]\n\n*Problem Description*\n\n*Approach*\n\n*Code*\n#+begin_src python\n\n#+end_src\n\n*Notes*\n"
+          :target (file+head "leetcode/${slug}.org"
+                             "#+title: ${title}\n#+category: leetcode\n#+tags: leetcode easy\n")
+          :unnarrowed t))))
 
 (after! org
   (setq org-agenda-files
@@ -96,5 +96,5 @@
 (setq doom-theme 'doom-gruvbox)
 (setq display-line-numbers-type t)
 (setq org-directory "~/org/")
-(setq fancy-splash-image "/home/aman/.config/doom/image(1).jpg")
+(setq fancy-splash-image "/Users/aip/.config/doom/image(1).jpg")
 
