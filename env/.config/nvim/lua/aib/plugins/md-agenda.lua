@@ -54,7 +54,7 @@ return {
 				tagColor = "blue",
 				titleColor = "yellow",
 
-				todoTypeColor = "cyan",
+				todoTypeColor = "green",
 				habitTypeColor = "cyan",
 				infoTypeColor = "lightgreen",
 				dueTypeColor = "red",

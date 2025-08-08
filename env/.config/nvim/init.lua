@@ -2,7 +2,6 @@ require("aib.core")
 require("aib.lazy")
 vim.opt.termguicolors = true
 vim.o.guifont = "SpaceMono\\ Nerd\\ Font\\ 50"
-
 vim.diagnostic.config({
 	signs = {
 		text = {

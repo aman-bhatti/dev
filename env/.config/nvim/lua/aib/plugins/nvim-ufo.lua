@@ -1,5 +1,41 @@
 return {
 	{
+		"nvim-treesitter/nvim-treesitter",
+		event = { "BufReadPre", "BufNewFile" },
+		build = ":TSUpdate",
+		config = function()
+			require("nvim-treesitter.configs").setup({
+				highlight = { enable = true },
+				indent = { enable = true },
+				ensure_installed = {
+					"markdown",
+					"markdown_inline",
+					"lua",
+					"vim",
+					"javascript",
+					"typescript",
+					"html",
+					"css",
+				},
+			})
+
+			-- Default: Treesitter folding
+			vim.o.foldmethod = "expr"
+			vim.o.foldexpr = "nvim_treesitter#foldexpr()"
+			vim.o.foldenable = true
+
+			-- Markdown-specific folding: fold by heading level
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = "markdown",
+				callback = function()
+					vim.opt_local.foldmethod = "expr"
+					vim.opt_local.foldexpr =
+						"getline(v:lnum)=~'^#' ? '>' . len(matchstr(getline(v:lnum), '^#\\+')) : '='"
+				end,
+			})
+		end,
+	},
+	{
 		"kevinhwang91/nvim-ufo",
 		dependencies = { "kevinhwang91/promise-async" },
 		config = function()
@@ -8,43 +44,15 @@ return {
 			vim.o.foldlevelstart = 99
 			vim.o.foldenable = true
 
-			local ufo = require("ufo")
-
-			ufo.setup({
-				provider_selector = function(_, _, _)
+			require("ufo").setup({
+				provider_selector = function(_, filetype, _)
+					if filetype == "markdown" then
+						-- Use indent provider since Treesitter doesn't fold markdown
+						return { "indent" }
+					end
 					return { "treesitter", "indent" }
 				end,
-				fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
-					local newVirtText = {}
-					local suffix = ("   %d lines"):format(endLnum - lnum)
-					local sufWidth = vim.fn.strdisplaywidth(suffix)
-					local targetWidth = width - sufWidth
-					local curWidth = 0
-
-					for _, chunk in ipairs(virtText) do
-						local chunkText = chunk[1]
-						local hlGroup = chunk[2]
-						if curWidth + vim.fn.strdisplaywidth(chunkText) < targetWidth then
-							table.insert(newVirtText, { chunkText, hlGroup })
-						else
-							chunkText = truncate(chunkText, targetWidth - curWidth)
-							table.insert(newVirtText, { chunkText, hlGroup })
-							chunkText = ""
-						end
-						curWidth = curWidth + vim.fn.strdisplaywidth(chunkText)
-						if curWidth >= targetWidth then
-							break
-						end
-					end
-
-					-- Add suffix with a different highlight
-					table.insert(newVirtText, { suffix, "MoreMsg" })
-					return newVirtText
-				end,
 			})
-
-			-- Make folded text look like normal text
-			vim.api.nvim_set_hl(0, "Folded", { link = "Normal" })
 		end,
 	},
 }

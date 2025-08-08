@@ -49,7 +49,7 @@ return {
 				additional_vim_regex_highlighting = false,
 			})
 
-			-- Enable Treesitter-based folding
+			-- Default: Treesitter folding
 			vim.opt.foldmethod = "expr"
 			vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 			vim.opt.foldenable = false -- start with all folds open
@@ -68,10 +68,19 @@ return {
 			function _G.MyFoldText()
 				local line = vim.fn.getline(vim.v.foldstart)
 				local lines_count = vim.v.foldend - vim.v.foldstart + 1
-				-- Trim leading/trailing spaces
 				line = line:gsub("^%s+", ""):gsub("%s+$", "")
 				return " " .. line .. "  … (" .. lines_count .. " lines)"
 			end
+
+			-- Markdown-specific folding: fold by heading level
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = "markdown",
+				callback = function()
+					vim.opt_local.foldmethod = "expr"
+					vim.opt_local.foldexpr =
+						"getline(v:lnum)=~'^#' ? '>' . len(matchstr(getline(v:lnum), '^#\\+')) : '='"
+				end,
+			})
 		end,
 	},
 	{
