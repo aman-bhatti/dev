@@ -4,18 +4,11 @@ return {
 		event = { "BufReadPre", "BufNewFile" },
 		build = ":TSUpdate",
 		config = function()
-			-- import nvim-treesitter plugin
 			local treesitter = require("nvim-treesitter.configs")
 
-			-- configure treesitter
-			treesitter.setup({ -- enable syntax highlighting
-				highlight = {
-					enable = true,
-				},
-				-- enable indentation
+			treesitter.setup({
+				highlight = { enable = true },
 				indent = { enable = true },
-
-				-- ensure these languages parsers are installed
 				ensure_installed = {
 					"json",
 					"javascript",
@@ -55,27 +48,53 @@ return {
 				},
 				additional_vim_regex_highlighting = false,
 			})
+
+			-- Enable Treesitter-based folding
+			vim.opt.foldmethod = "expr"
+			vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+			vim.opt.foldenable = false -- start with all folds open
+
+			-- Cleaner fold icons
+			vim.opt.fillchars = {
+				fold = " ",
+				foldopen = "",
+				foldclose = "",
+				foldsep = " ",
+			}
+
+			-- Custom fold text function
+			vim.opt.foldtext = "v:lua.MyFoldText()"
+
+			function _G.MyFoldText()
+				local line = vim.fn.getline(vim.v.foldstart)
+				local lines_count = vim.v.foldend - vim.v.foldstart + 1
+				-- Trim leading/trailing spaces
+				line = line:gsub("^%s+", ""):gsub("%s+$", "")
+				return " " .. line .. "  … (" .. lines_count .. " lines)"
+			end
 		end,
 	},
-	-- NOTE: js,ts,jsx,tsx Auto Close Tags
 	{
 		"windwp/nvim-ts-autotag",
-		ft = { "html", "xml", "javascript", "typescript", "javascriptreact", "typescriptreact", "svelte" },
+		ft = {
+			"html",
+			"xml",
+			"javascript",
+			"typescript",
+			"javascriptreact",
+			"typescriptreact",
+			"svelte",
+		},
 		config = function()
-			-- Independent nvim-ts-autotag setup
 			require("nvim-ts-autotag").setup({
 				opts = {
-					enable_close = true, -- Auto-close tags
-					enable_rename = true, -- Auto-rename pairs
-					enable_close_on_slash = false, -- Disable auto-close on trailing `</`
+					enable_close = true,
+					enable_rename = true,
+					enable_close_on_slash = false,
 				},
 				per_filetype = {
-					["html"] = {
-						enable_close = true, -- Disable auto-closing for HTML
-					},
-					["typescriptreact"] = {
-						enable_close = true, -- Explicitly enable auto-closing (optional, defaults to `true`)
-					},
+					["html"] = { enable_close = true },
+					["typescriptreact"] = { enable_close = true },
 				},
 			})
 		end,
