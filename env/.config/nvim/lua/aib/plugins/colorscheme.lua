@@ -35,7 +35,8 @@ return {
 
 			-- HACK: set this on the color you want to be persistent
 			-- when quit and reopening nvim
-			vim.cmd("colorscheme base16-black-metal-gorgoroth")
+			-- vim.cmd("colorscheme base16-black-metal-gorgoroth")
+			vim.cmd("colorscheme base16-gruvbox-dark-soft")
 		end,
 	},
 	-- Using lazy.nvim
@@ -49,6 +50,18 @@ return {
 				-- Use an alternate, lighter bg
 				alt_bg = false, -- optional configuration here
 			})
+		end,
+	},
+	{ "ellisonleao/gruvbox.nvim", priority = 1000, config = true, opts = ... },
+	{
+		"sainnhe/gruvbox-material",
+		lazy = false,
+		priority = 1000,
+		config = function()
+			-- Optionally configure and load the colorscheme
+			-- directly inside the plugin declaration.
+			vim.g.gruvbox_material_enable_italic = true
+			vim.cmd.colorscheme("gruvbox-material")
 		end,
 	},
 	{

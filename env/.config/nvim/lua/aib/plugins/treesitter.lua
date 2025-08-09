@@ -49,12 +49,11 @@ return {
 				additional_vim_regex_highlighting = false,
 			})
 
-			-- Default: Treesitter folding
-			vim.opt.foldmethod = "expr"
-			vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-			vim.opt.foldenable = false -- start with all folds open
+			-- NOTE: All folding logic has been removed from this file.
+			-- This prevents conflicts with nvim-ufo, which now manages
+			-- all folding behavior for you.
 
-			-- Cleaner fold icons
+			-- You can keep your cosmetic settings for folds, as they do not conflict.
 			vim.opt.fillchars = {
 				fold = " ",
 				foldopen = "",
@@ -71,16 +70,6 @@ return {
 				line = line:gsub("^%s+", ""):gsub("%s+$", "")
 				return " " .. line .. "  … (" .. lines_count .. " lines)"
 			end
-
-			-- Markdown-specific folding: fold by heading level
-			vim.api.nvim_create_autocmd("FileType", {
-				pattern = "markdown",
-				callback = function()
-					vim.opt_local.foldmethod = "expr"
-					vim.opt_local.foldexpr =
-						"getline(v:lnum)=~'^#' ? '>' . len(matchstr(getline(v:lnum), '^#\\+')) : '='"
-				end,
-			})
 		end,
 	},
 	{

@@ -52,7 +52,7 @@ return {
 
 				-- Optional: Change agenda colors.
 				tagColor = "blue",
-				titleColor = "yellow",
+				titleColor = "magenta",
 
 				todoTypeColor = "green",
 				habitTypeColor = "cyan",

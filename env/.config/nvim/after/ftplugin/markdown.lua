@@ -1,35 +1,30 @@
+-- Place this in your ftplugin/markdown.lua
+
 local set = vim.opt_local
 
 set.textwidth = 80 -- Wrap text at 80 characters
 set.spell = true -- Enable spell checking
 set.linebreak = true
 
--- added extra highlights for markdown files to render highlights properly
--- thx to Linkarzu
+-- Define the foreground colors you want to use for your headings.
+-- The background will now be inherited from your colorscheme.
+local h1_fg = "#D3869B" -- Formerly color2_fg
+-- local h1_bg = "#1F2335" -- Formerly color_fg, used for the H1 banner
+local h2_fg = "#4fd6be"
+local h3_fg = "#7dcfff"
+local h4_fg = "#ff9e64"
+local h5_fg = "#7aa2f7"
+local h6_fg = "#c0caf5"
 
-local color1_bg = "#ff757f"
-local color2_bg = "#4fd6be"
-local color3_bg = "#7dcfff"
-local color4_bg = "#ff9e64"
-local color5_bg = "#7aa2f7"
-local color6_bg = "#c0caf5"
-local color_fg = "#1F2335"
+-- Set the highlight groups
 
-vim.cmd(
-	string.format([[highlight @markup.heading.1.markdown cterm=bold gui=bold guifg=%s guibg=%s]], color_fg, color1_bg)
-)
-vim.cmd(
-	string.format([[highlight @markup.heading.2.markdown cterm=bold gui=bold guifg=%s guibg=%s]], color_fg, color2_bg)
-)
-vim.cmd(
-	string.format([[highlight @markup.heading.3.markdown cterm=bold gui=bold guifg=%s guibg=%s]], color_fg, color3_bg)
-)
-vim.cmd(
-	string.format([[highlight @markup.heading.4.markdown cterm=bold gui=bold guifg=%s guibg=%s]], color_fg, color4_bg)
-)
-vim.cmd(
-	string.format([[highlight @markup.heading.5.markdown cterm=bold gui=bold guifg=%s guibg=%s]], color_fg, color5_bg)
-)
-vim.cmd(
-	string.format([[highlight @markup.heading.6.markdown cterm=bold gui=bold guifg=%s guibg=%s]], color_fg, color6_bg)
-)
+-- @markup.heading.1 is special: it creates a solid banner effect.
+-- We keep the explicit background here as it seems intentional.
+vim.cmd(string.format([[highlight @markup.heading.1.markdown cterm=bold gui=bold guifg=%s guibg=NONE]], h1_fg))
+
+-- For headings 2-6, we set guibg=NONE to make the background transparent.
+vim.cmd(string.format([[highlight @markup.heading.2.markdown cterm=bold gui=bold guifg=%s guibg=NONE]], h2_fg))
+vim.cmd(string.format([[highlight @markup.heading.3.markdown cterm=bold gui=bold guifg=%s guibg=NONE]], h3_fg))
+vim.cmd(string.format([[highlight @markup.heading.4.markdown cterm=bold gui=bold guifg=%s guibg=NONE]], h4_fg))
+vim.cmd(string.format([[highlight @markup.heading.5.markdown cterm=bold gui=bold guifg=%s guibg=NONE]], h5_fg))
+vim.cmd(string.format([[highlight @markup.heading.6.markdown cterm=bold gui=bold guifg=%s guibg=NONE]], h6_fg))
