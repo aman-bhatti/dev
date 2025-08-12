@@ -1,6 +1,9 @@
 -- For `plugins/markview.lua` users.
 return {
 	"OXY2DEV/markview.nvim",
+	-- dependencies = {
+	-- 	"nvim-treesitter/nvim-treesitter",
+	-- },
 	lazy = false,
 	priority = 49,
 	config = function()
@@ -43,10 +46,17 @@ return {
 
 		-- STEP 4: Your standard Markview setup.
 		require("markview").setup({
-			conceal = true,
 			markdown = {
+				conceal = false,
 				headings = {
 					shift_width = 1,
+				},
+			},
+			preview = {
+				callbacks = {
+					on_enable = function()
+						vim.opt_local.conceallevel = 2
+					end,
 				},
 			},
 		})

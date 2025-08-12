@@ -1,7 +1,6 @@
 -- Place this in your ftplugin/markdown.lua
 
 local set = vim.opt_local
-
 set.textwidth = 80 -- Wrap text at 80 characters
 set.spell = true -- Enable spell checking
 set.linebreak = true
@@ -28,3 +27,5 @@ vim.cmd(string.format([[highlight @markup.heading.3.markdown cterm=bold gui=bold
 vim.cmd(string.format([[highlight @markup.heading.4.markdown cterm=bold gui=bold guifg=%s guibg=NONE]], h4_fg))
 vim.cmd(string.format([[highlight @markup.heading.5.markdown cterm=bold gui=bold guifg=%s guibg=NONE]], h5_fg))
 vim.cmd(string.format([[highlight @markup.heading.6.markdown cterm=bold gui=bold guifg=%s guibg=NONE]], h6_fg))
+
+vim.opt_local.conceallevel = 2

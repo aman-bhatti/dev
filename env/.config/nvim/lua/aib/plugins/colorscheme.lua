@@ -1,5 +1,4 @@
 return {
-	-- NOTE: Rose pine
 	{
 		"rose-pine/neovim",
 		name = "rose-pine",
@@ -36,7 +35,8 @@ return {
 			-- HACK: set this on the color you want to be persistent
 			-- when quit and reopening nvim
 			-- vim.cmd("colorscheme base16-black-metal-gorgoroth")
-			vim.cmd("colorscheme base16-gruvbox-dark-soft")
+			-- vim.cmd("colorscheme base16-gruvbox-dark-soft")
+			vim.cmd("colorscheme gruvbox-material")
 		end,
 	},
 	-- Using lazy.nvim
